@@ -27,4 +27,12 @@ if (MYSQL_FOUND)
 	)
 endif()
 
-# TODO: tests and install
+option(CMAKE_BUILD_TESTS "Build tests?" ON)
+if (CMAKE_BUILD_TESTS)
+	set(MYSQLCXX_TEST_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/include)
+	enable_testing()
+	add_subdirectory(tests)
+endif()
+
+
+# TODO: install project
