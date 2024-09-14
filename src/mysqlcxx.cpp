@@ -1,10 +1,9 @@
 #include <mysqlcxx.h>
 
 #include <queue>
-#include <format>
+#include <fmt/format.h>
 #include <sstream>
 #include <variant>
-
 
 #ifdef MARIADB_VERSION_ID
 #define CONNECT_STRING "SET NAMES utf8mb4, @@SESSION.max_statement_time=3000"
@@ -144,7 +143,7 @@ namespace mysqlcxx {
             failed = true;
 
             last_error = {.thread_id = std::this_thread::get_id(),
-                          .message   = std::format("Database connection failed: {}",
+                          .message   = fmt::format("Database connection failed: {}",
                                                    mysql_error(&connections[i].connection))};
             break;
           }
@@ -228,7 +227,7 @@ namespace mysqlcxx {
     if (query_params.size() != escaped_parameters.size()) {
       last_error = {.thread_id = std::this_thread::get_id(),
                     .message =
-                        std::format("Parameter wasn't escaped: {}", mysql_error(&conn.connection))};
+                        fmt::format("Parameter wasn't escaped: {}", mysql_error(&conn.connection))};
       errored++;
       conn.queries_errored++;
       return rv;
@@ -311,7 +310,7 @@ namespace mysqlcxx {
         // watch your code.
         last_error = {.thread_id = std::this_thread::get_id(),
                       .message =
-                          std::format("SQL Error: {} on query {}",
+                          fmt::format("SQL Error: {} on query {}",
                                       std::string(mysql_error(&conn.connection)), query_string)};
         errored++;
         conn.queries_errored++;
